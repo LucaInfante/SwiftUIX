@@ -18,9 +18,11 @@ public struct CocoaTextField<Label: View>: CocoaView {
     private var isInitialFirstResponder: Bool?
     private var isFirstResponder: Bool?
     
+    private var autocorrection: UITextAutocorrectionType?
     private var autocapitalization: UITextAutocapitalizationType?
     private var borderStyle: UITextField.BorderStyle = .none
     private var uiFont: UIFont?
+    private var uiColor: UIColor?
     private var inputAccessoryView: AnyView?
     private var inputView: AnyView?
     private var kerning: CGFloat?
@@ -50,9 +52,11 @@ public struct CocoaTextField<Label: View>: CocoaView {
                 onDeleteBackward: onDeleteBackward,
                 isInitialFirstResponder: isInitialFirstResponder,
                 isFirstResponder: isFirstResponder,
+                autocorrection: autocorrection,
                 autocapitalization: autocapitalization,
                 borderStyle: borderStyle,
                 uiFont: uiFont,
+                uiColor: uiColor,
                 inputAccessoryView: inputAccessoryView,
                 inputView: inputView,
                 kerning: kerning,
@@ -77,9 +81,11 @@ public struct _CocoaTextField: UIViewRepresentable {
     var onDeleteBackward: () -> Void
     var isInitialFirstResponder: Bool?
     var isFirstResponder: Bool?
+    var autocorrection: UITextAutocorrectionType?
     var autocapitalization: UITextAutocapitalizationType?
     var borderStyle: UITextField.BorderStyle
     var uiFont: UIFont?
+    var uiColor: UIColor?
     var inputAccessoryView: AnyView?
     var inputView: AnyView?
     var kerning: CGFloat?
@@ -140,6 +146,10 @@ public struct _CocoaTextField: UIViewRepresentable {
         
         uiView.setContentHuggingPriority(.defaultHigh, for: .vertical)
         
+        if let autocorrection = autocorrection {
+            uiView.autocorrectionType = autocorrection
+        }  
+        
         if let autocapitalization = autocapitalization {
             uiView.autocapitalizationType = autocapitalization
         }
@@ -147,6 +157,8 @@ public struct _CocoaTextField: UIViewRepresentable {
         uiView.borderStyle = borderStyle
         uiView.font = uiFont ?? font?.toUIFont()
         
+        uiView.textColor = uiColor
+
         if let kerning = kerning {
             uiView.defaultTextAttributes.updateValue(kerning, forKey: .kern)
         }
@@ -269,6 +281,10 @@ extension CocoaTextField {
 }
 
 extension CocoaTextField {
+    public func autocorrection(_ autocorrection: UITextAutocorrectionType) -> Self {
+        then({ $0.autocorrection = autocorrection })
+    }
+    
     public func autocapitalization(_ autocapitalization: UITextAutocapitalizationType) -> Self {
         then({ $0.autocapitalization = autocapitalization })
     }
@@ -279,6 +295,10 @@ extension CocoaTextField {
     
     public func font(_ uiFont: UIFont) -> Self {
         then({ $0.uiFont = uiFont })
+    }
+    
+    public func textColor(_ uiColor: UIColor) -> Self {
+        then({ $0.uiColor = uiColor })
     }
     
     public func inputAccessoryView<InputAccessoryView: View>(_ view: InputAccessoryView) -> Self {
