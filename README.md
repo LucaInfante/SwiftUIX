@@ -1,4 +1,4 @@
-# Forked for personal interventions and not "worthy" of pull request or original git was abandoned.
+# Forked for minor changes. Evaluate if pull to request to original repository
 
 <img align=top src="https://raw.githubusercontent.com/SwiftUIX/SwiftUIX/master/Assets/logo.png" width="36" height="36"> SwiftUIX: An extension to the standard SwiftUI library.
 ======================================
